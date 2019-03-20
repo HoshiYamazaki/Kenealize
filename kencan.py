@@ -11,10 +11,10 @@ class KenCan():
             if line.startswith(b'Nmap scan report for'):
                 line_data = line.decode("utf-8").split()
                 domain = ''
+                ip = line_data[4]
                 if len(line_data) > 5:
                     domain = line_data[4]
                     ip = line_data[5].replace('(', '').replace(')', '')
-                ip = line_data[4]
                 self.devices_ips.append({
                     'ip': ip,
                     'domain': domain
@@ -27,6 +27,3 @@ class KenCan():
             'devices': device_amount,
             'time': time
         }
-
-    def get_devices_ips(self):
-        return self.devices_ips
