@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.views.generic import TemplateView
 
@@ -13,6 +11,5 @@ class IndexView(TemplateView):
         """Get context data."""
         context = super().get_context_data(**kwargs)
         KenCanAPI = KenCan()
-        context['nmap'] = KenCanAPI.scan_network()
-        context['data'] = KenCanAPI.devices_ips
+        print(KenCanAPI.scan_device('192.168.1.48'))
         return context
