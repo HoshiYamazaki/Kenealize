@@ -4,3 +4,4 @@ exclude =   migrations
             settings.py
             settings_local.py
             .git/
+            .venv/
