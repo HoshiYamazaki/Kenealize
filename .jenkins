@@ -1,0 +1,13 @@
+# Create/Activate virtualenv
+python3 -m virtualenv -p python3 .venv
+
+source .venv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+
+# Flake8
+flake8 .
+
+# Clean virtualenv
+rm -rf .venv
