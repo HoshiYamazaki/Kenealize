@@ -1,4 +1,4 @@
-Django==2.1.7
+Django==2.2
 sorl-thumbnail==12.5.0
 flake8==3.7.7
 django_cron==0.5.1
