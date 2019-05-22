@@ -6,17 +6,25 @@
     <body>
         <div>
             <b>Number of devices:</b>
-            {{ nmap.devices }}
+            {{ host_amount }}
             <b>Nmap execution time:</b>
-            {{ nmap.time }}
+            {{ exec_time }}
+            <b>Nmap Version:</b>
+            {{ nmap_ver }}
         </div>
 
         <div>
             <table border="1">
-                {% for result in data %}
+                <tr>
+                    <td>IP</td>
+                    <td>Status</td>
+                    <td>Hostname</td>
+                </tr>
+                {% for result in scan_data %}
                     <tr>
                     <td>{{ result.ip }}</td>
-                    <td>{{ result.domain }}</td>
+                    <td>{{ result.status }}</td>
+                    <td>{{ result.hostname }}</td>
                     </tr>
                 {% endfor %}
                 </tr>

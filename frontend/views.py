@@ -11,5 +11,8 @@ class IndexView(TemplateView):
         """Get context data."""
         context = super().get_context_data(**kwargs)
         KenCanAPI = KenCan()
-        print(KenCanAPI.scan_device('192.168.1.48'))
+        context['scan_data'] = KenCanAPI.get_lan_hosts()
+        context['exec_time'] = KenCanAPI.get_search_exec_time()
+        context['host_amount'] = KenCanAPI.get_hosts_amount()
+        context['nmap_ver'] = KenCanAPI.get_nmap_version()
         return context

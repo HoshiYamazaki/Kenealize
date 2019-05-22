@@ -1,60 +1,55 @@
+import json
 import subprocess
+import xmltodict
 
 
 class KenCan(object):
     """KenCan scanner."""
     def __init__(self):
-        self.devices_ips = []
+        self.data = None
+        self.err = None
+        self.xml_dict = []
+        self.refresh()
+
+    def get_lan_hosts(self):
+        host_dict = []
+        for host in self.xml_dict['nmaprun']['host']:
+            hostname = None
+            if host['hostnames'] is not None:
+                hostname = host['hostnames']['hostname']['@name']
+            host_dict.append({
+                'status': host['status']['@state'],
+                'ip': host['address']['@addr'],
+                'hostname': hostname,
+            })
+        return host_dict
+
+    def get_search_exec_time(self):
+        return self.xml_dict['nmaprun']['runstats']['finished']['@elapsed']
+
+    def get_hosts_amount(self):
+        return self.xml_dict['nmaprun']['runstats']['hosts']['@up']
+
+    def get_nmap_version(self):
+        return self.xml_dict['nmaprun']['@version']
+
+    def refresh(self):
         self.data, self.err = subprocess.Popen(
-            ['nmap', '-sP', '192.168.1.1/24'], stdout=subprocess.PIPE
+            ['nmap', '-sP', '192.168.1.1/24', '-oX', '-'], stdout=subprocess.PIPE
         ).communicate()
+        self.xml_dict = xmltodict.parse(self.data)
 
-    def scan_network(self):
-        for line in self.data.splitlines():
-            if line.startswith(b'Nmap scan report for'):
-                line_data = line.decode("utf-8").split()
-                domain = ''
-                ip = line_data[4]
-                if len(line_data) > 5:
-                    domain = line_data[4]
-                    ip = line_data[5].replace('(', '').replace(')', '')
-                self.devices_ips.append({
-                    'ip': ip,
-                    'domain': domain
-                })
-            if line.startswith(b'Nmap done: '):
-                line_data = line.decode("utf-8").split()
-                device_amount = line_data[5].replace('(', '')
-                time = line_data[10]
-        return {
-            'devices': device_amount,
-            'time': time
-        }
-
-    def scan_device(self, ip):
-        self.data, self.err = subprocess.Popen(['nmap', ip], stdout=subprocess.PIPE).communicate()
-        scanned_ports = []
-        for line in self.data.splitlines():
-            if line.startswith(b'Host is up '):
-                line_data = line.decode('utf-8').split()
-                latency = line_data[3].replace('(', '')
-            if b'/tcp' in line or b'/udp' in line:
-                line_data = line.decode('utf-8').split()
-                print(line_data)
-                scanned_ports.append({
-                    'port': line_data[0],
-                    'state:': line_data[1],
-                    'service': line_data[2]
-                })
-            if line.startswith(b'MAC Address: '):
-                line_data = line.decode('utf-8').split()
-                mac_addr = line_data[2]
-            if line.startswith(b'Nmap done: '):
-                line_data = line.decode('utf-8').split()
-                time = line_data[10]
-        return {
-            'data': scanned_ports,
-            'latency': latency,
-            'mac': mac_addr,
-            'time': time,
-        }
+    def scan_ip_services(self, ip_addr):
+        self.data, self.err = subprocess.Popen(
+            ['nmap', ip_addr, '-oX', '-'], stdout=subprocess.PIPE
+        ).communicate()
+        data_dict = xmltodict.parse(self.data)
+        result_dict = []
+        for port in data_dict['nmaprun']['host']['ports']['port']:
+            result_dict.append({
+                'protocol': port['@protocol'],
+                'port': port['@portid'],
+                'state': port['state']['@state'],
+                'service': port['service']['@name']
+            })
+        return result_dict
