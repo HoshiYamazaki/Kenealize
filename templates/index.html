@@ -4,31 +4,59 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <div>
-            <b>Number of devices:</b>
-            {{ host_amount }}
-            <b>Nmap execution time:</b>
-            {{ exec_time }}
-            <b>Nmap Version:</b>
-            {{ nmap_ver }}
-        </div>
+        <nav class="navbar navbar-light bg-light mb-5">
+            <a class="navbar-brand" href="#">Kenealize</a>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link active" id="pill-index" data-toggle="pill" href="#index" role="tab" aria-controls="pill-index" aria-selected="true">Actual info</a>
+                        <a class="nav-link" id="pill-history" data-toggle="pill" href="#history" role="tab" aria-controls="pill-history" aria-selected="false">History logs</a>
+                        <a class="nav-link" id="pill-settings" data-toggle="pill" href="#settings" role="tab" aria-controls="pill-settings" aria-selected="false">Settings</a>
+                        <a class="nav-link" id="pill-about" data-toggle="pill" href="#about" role="tab" aria-controls="pill-about" aria-selected="false">About</a>
+                    </div>
+                </div>
 
-        <div>
-            <table border="1">
-                <tr>
-                    <td>IP</td>
-                    <td>Status</td>
-                    <td>Hostname</td>
-                </tr>
-                {% for result in scan_data %}
-                    <tr>
-                    <td>{{ result.ip }}</td>
-                    <td>{{ result.status }}</td>
-                    <td>{{ result.hostname }}</td>
-                    </tr>
-                {% endfor %}
-                </tr>
-            </table>
+                <div class="col-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="index" role="tabpanel">
+                            <div class="mb-3"><b>Number of devices:</b>
+                                {{ host_amount }}
+                                <b>Nmap execution time:</b>
+                                {{ exec_time }}
+                                <b>Nmap Version:</b>
+                                {{ nmap_ver }}
+                            </div>
+
+                            <table class="table">
+                                <tr>
+                                    <td>IP</td>
+                                    <td>Status</td>
+                                    <td>Hostname</td>
+                                </tr>
+                                {% for result in scan_data %}
+                                    <tr>
+                                    <td>{{ result.ip }}</td>
+                                    <td>{{ result.status }}</td>
+                                    <td>{{ result.hostname }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade show" id="history" role="tabpanel">
+                            Under construction.
+                        </div>
+                        <div class="tab-pane fade show" id="settings" role="tabpanel">
+                            Under construction.
+                        </div>
+                        <div class="tab-pane fade show" id="about" role="tabpanel">
+                            Kenealize is an networking tool written in Django/Python for home server purposes with automation of scanning.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
