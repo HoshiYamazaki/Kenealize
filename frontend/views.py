@@ -1,10 +1,11 @@
 # Create your views here.
 from django.views.generic import TemplateView
+from django_common.mixin import LoginRequiredMixin
 
 from kencan import KenCan
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
