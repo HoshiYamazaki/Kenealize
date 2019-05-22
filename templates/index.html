@@ -6,6 +6,11 @@
     <body>
         <nav class="navbar navbar-light bg-light mb-5">
             <a class="navbar-brand" href="#">Kenealize</a>
+            {% if user.is_authenticated %}
+                <span class="navbar-text text-dark">
+                    You're logged as {{ user.get_username}}
+                </span>
+            {% endif %}
         </nav>
         <div class="container">
             <div class="row">
@@ -30,11 +35,14 @@
                             </div>
 
                             <table class="table">
-                                <tr>
-                                    <td>IP</td>
-                                    <td>Status</td>
-                                    <td>Hostname</td>
-                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">IP</th>
+                                        <th scople="col">Status</th>
+                                        <th scope="col">Hostname</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 {% for result in scan_data %}
                                     <tr>
                                     <td>{{ result.ip }}</td>
@@ -42,7 +50,7 @@
                                     <td>{{ result.hostname }}</td>
                                     </tr>
                                 {% endfor %}
-                                </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade show" id="history" role="tabpanel">
