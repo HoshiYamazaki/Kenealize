@@ -6,8 +6,8 @@ from collect.models import Device, Execution
 
 @admin.register(Execution)
 class ExecutionAdmin(admin.ModelAdmin):
-    list_display = ('time', 'amount', 'execution')
-    search_fields = ('execution',)
+    list_display = ('time', 'amount', 'execution', 'from_index')
+    search_fields = ('amount',)
 
 
 @admin.register(Device)

@@ -1,4 +1,4 @@
-import json
+import datetime
 import subprocess
 import xmltodict
 
@@ -27,6 +27,10 @@ class KenCan(object):
     def get_search_exec_time(self):
         return self.xml_dict['nmaprun']['runstats']['finished']['@elapsed']
 
+    def get_search_finished_time(self):
+        data = self.xml_dict['nmaprun']['runstats']['finished']['@time']
+        return datetime.datetime.fromtimestamp(int(data))
+
     def get_hosts_amount(self):
         return self.xml_dict['nmaprun']['runstats']['hosts']['@up']
 
@@ -53,3 +57,10 @@ class KenCan(object):
                 'service': port['service']['@name']
             })
         return result_dict
+
+    def get_db_data(self):
+        return {
+            'time': self.get_search_finished_time(),
+            'amount': self.get_hosts_amount(),
+            'execution': self.get_search_exec_time(),
+        }
