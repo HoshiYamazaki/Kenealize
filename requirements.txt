@@ -1,5 +1,6 @@
-Django==2.2.10
-sorl-thumbnail==12.5.0
-flake8==3.7.7
+django==3.1.4
+djangorestframework==3.12.2
+sorl-thumbnail==12.6.3
 django_cron==0.5.1
 xmltodict==0.12.0
+psycopg2-binary==2.8.5

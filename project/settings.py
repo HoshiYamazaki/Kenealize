@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'django_cron',
     'frontend',
     'collect',
@@ -124,3 +125,8 @@ LOGIN_URL = '/admin/'
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    from project.settings_local import *  # noqa: F401,F403
+except ImportError:
+    pass
